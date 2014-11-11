@@ -17,7 +17,7 @@ namespace BorrowBook.DAL
             try
             {
                 Connection.Open();
-                string query = string.Format("DELETE FROM Borrow WHERE BookId={0} AND MemberId={1}", bookId, memberId);
+                string query = string.Format("UPDATE Borrow SET Borrow='{0}' WHERE BookId={1} AND MemberId={2}","Returned", bookId, memberId);
                 Command.CommandText = query;
                 int rowAffected = Command.ExecuteNonQuery();
                 Connection.Close();
@@ -41,7 +41,7 @@ namespace BorrowBook.DAL
             try
             {
                 Connection.Open();
-                string query = string.Format("SELECT * FROM View_1 WHERE Number='{0}'", number);
+                string query = string.Format("SELECT * FROM View_1 WHERE Number='{0}' AND Borrow='{1}'", number,"Borrowed");
                 Command.CommandText = query;
                 SqlDataReader aReader = Command.ExecuteReader();
                 bool hasRow = aReader.HasRows;
@@ -50,8 +50,7 @@ namespace BorrowBook.DAL
                 {
                     while (aReader.Read())
                     {
-                        string bookName;
-                        bookName = aReader[1].ToString();
+                        string bookName= aReader[1].ToString();
                         aBooks.Add(bookName);
                     }
                 }
